@@ -1,3 +1,3 @@
 # customOpModes
-use K9TeleOp or K9TankDrive
-customOpModes/uselessOps is filled with useless classes
+use K9TeleOp or K9TankDrive\n
+uselessOps is filled with example op modes
