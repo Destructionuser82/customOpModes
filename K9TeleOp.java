@@ -73,8 +73,8 @@ public class K9TeleOp extends OpMode {
 	DcMotor motorLeft;
 	//Servo claw;
 	//Servo arm;
-	TouchSensor touchsensor;
-	UltrasonicSensor ultrasonicsensor;
+	//TouchSensor touchsensor;
+	//UltrasonicSensor ultrasonicsensor;
 
 	/**
 	 * Constructor
@@ -115,8 +115,8 @@ public class K9TeleOp extends OpMode {
 		//no servos right now
 		//arm = hardwareMap.servo.get("servo_1");
 		//claw = hardwareMap.servo.get("servo_6");
-		touchsensor = hardwareMap.touchSensor.get("touch_s");
-		ultrasonicsensor = hardwareMap.ultrasonicSensor.get("ultra_s");
+		//touchsensor = hardwareMap.touchSensor.get("touch_s");
+		//ultrasonicsensor = hardwareMap.ultrasonicSensor.get("ultra_s");
 
 		// assign the starting position of the wrist and claw
 		armPosition = 0.0;
@@ -161,7 +161,7 @@ public class K9TeleOp extends OpMode {
 		motorLeft.setPower(left);
 		//arm.setPosition((gamepad1.right_stick_x)/2 + 0.5);
 		//claw.setPosition((gamepad1.right_stick_x)/2 +0.5);
-		if(touchsensor.isPressed()){
+		/*if(touchsensor.isPressed()){
 			motorLeft.setPower(1);
 			motorRight.setPower(1);
 			while(!touchsensor.isPressed()){}
@@ -170,7 +170,7 @@ public class K9TeleOp extends OpMode {
 			motorLeft.setPower(-1);
 			motorRight.setPower(-1);
 			while(!touchsensor.isPressed()){}
-		}
+		}*/
 
 		// update the position of the arm.
 		/*if (gamepad1.a) {
