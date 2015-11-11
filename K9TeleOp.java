@@ -33,10 +33,7 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.LightSensor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -52,29 +49,27 @@ public class K9TeleOp extends OpMode {
 	 * Also, as the claw servo approaches 0, the claw opens up (drops the game element).
 	 */
 	// TETRIX VALUES.
-	/*final static double ARM_MIN_RANGE  = 0.20;
+	final static double ARM_MIN_RANGE  = 0.20;
 	final static double ARM_MAX_RANGE  = 0.90;
 	final static double CLAW_MIN_RANGE  = 0.20;
-	final static double CLAW_MAX_RANGE  = 0.7;*/
+	final static double CLAW_MAX_RANGE  = 0.7;
 
 	// position of the arm servo.
 	double armPosition;
 
 	// amount to change the arm servo position.
-	//double armDelta = 0.1;
+	double armDelta = 0.1;
 
 	// position of the claw servo
 	double clawPosition;
 
 	// amount to change the claw servo position by
-	//double clawDelta = 0.1;
+	double clawDelta = 0.1;
 
 	DcMotor motorRight;
 	DcMotor motorLeft;
-	//Servo claw;
-	//Servo arm;
-	//TouchSensor touchsensor;
-	//UltrasonicSensor ultrasonicsensor;
+	Servo claw;
+	Servo arm;
 
 	/**
 	 * Constructor
@@ -84,9 +79,9 @@ public class K9TeleOp extends OpMode {
 	}
 
 	/*
-	 * Code to run when the op mode is initialized goes here
+	 * Code to run when the op mode is first enabled goes here
 	 * 
-	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#init()
+	 * @see com.qualcomm.robotcore.eventloop.opmode.OpMode#start()
 	 */
 	@Override
 	public void init() {
@@ -111,16 +106,13 @@ public class K9TeleOp extends OpMode {
 		motorRight = hardwareMap.dcMotor.get("motor_2");
 		motorLeft = hardwareMap.dcMotor.get("motor_1");
 		motorLeft.setDirection(DcMotor.Direction.REVERSE);
-
-		//no servos right now
-		//arm = hardwareMap.servo.get("servo_1");
-		//claw = hardwareMap.servo.get("servo_6");
-		//touchsensor = hardwareMap.touchSensor.get("touch_s");
-		//ultrasonicsensor = hardwareMap.ultrasonicSensor.get("ultra_s");
+		
+		arm = hardwareMap.servo.get("servo_1");
+		claw = hardwareMap.servo.get("servo_6");
 
 		// assign the starting position of the wrist and claw
-		armPosition = 0.0;
-		clawPosition = 0.0;
+		armPosition = 0.2;
+		clawPosition = 0.2;
 	}
 
 	/*
@@ -143,7 +135,7 @@ public class K9TeleOp extends OpMode {
 		// direction: left_stick_x ranges from -1 to 1, where -1 is full left
 		// and 1 is full right
 		float throttle = -gamepad1.left_stick_y;
-		float direction = -gamepad1.left_stick_x;
+		float direction = gamepad1.left_stick_x;
 		float right = throttle - direction;
 		float left = throttle + direction;
 
@@ -159,49 +151,37 @@ public class K9TeleOp extends OpMode {
 		// write the values to the motors
 		motorRight.setPower(right);
 		motorLeft.setPower(left);
-		//arm.setPosition((gamepad1.right_stick_x)/2 + 0.5);
-		//claw.setPosition((gamepad1.right_stick_x)/2 +0.5);
-		/*if(touchsensor.isPressed()){
-			motorLeft.setPower(1);
-			motorRight.setPower(1);
-			while(!touchsensor.isPressed()){}
-		}
-		if(ultrasonicsensor.getUltrasonicLevel() < 50){
-			motorLeft.setPower(-1);
-			motorRight.setPower(-1);
-			while(!touchsensor.isPressed()){}
-		}*/
 
 		// update the position of the arm.
-		/*if (gamepad1.a) {
+		if (gamepad1.a) {
 			// if the A button is pushed on gamepad1, increment the position of
 			// the arm servo.
-			armPosition += armDelta;
+			claw.setPosition(clawPosition);
 		}
 
 		if (gamepad1.y) {
 			// if the Y button is pushed on gamepad1, decrease the position of
 			// the arm servo.
-			armPosition -= armDelta;
+			arm.setPosition(0.4);
+			arm.setPosition(0.2);
 		}
 
 		// update the position of the claw
 		if (gamepad1.x) {
-			clawPosition += clawDelta;
+
 		}
 
 		if (gamepad1.b) {
-			clawPosition -= clawDelta;
-		}*/
+
+		}
 
         // clip the position values so that they never exceed their allowed range.
-        //armPosition = Range.clip(armPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
-        //clawPosition = Range.clip(clawPosition, CLAW_MIN_RANGE, CLAW_MAX_RANGE);
+        armPosition = Range.clip(armPosition, ARM_MIN_RANGE, ARM_MAX_RANGE);
+        clawPosition = Range.clip(clawPosition, CLAW_MIN_RANGE, CLAW_MAX_RANGE);
 
 		// write position values to the wrist and claw servo
-		//arm.setPosition(armPosition);
-		//claw.setPosition(clawPosition);
-
+		arm.setPosition(armPosition);
+		claw.setPosition(clawPosition);
 
 
 
@@ -228,7 +208,8 @@ public class K9TeleOp extends OpMode {
 	public void stop() {
 
 	}
-	
+
+    	
 	/*
 	 * This method scales the joystick input so for low joystick values, the 
 	 * scaled value is less than linear.  This is to make it easier to drive
@@ -240,19 +221,26 @@ public class K9TeleOp extends OpMode {
 		
 		// get the corresponding index for the scaleInput array.
 		int index = (int) (dVal * 16.0);
+		
+		// index should be positive.
 		if (index < 0) {
 			index = -index;
-		} else if (index > 16) {
+		}
+
+		// index cannot exceed size of array minus 1.
+		if (index > 16) {
 			index = 16;
 		}
-		
+
+		// get value from the array.
 		double dScale = 0.0;
 		if (dVal < 0) {
 			dScale = -scaleArray[index];
 		} else {
 			dScale = scaleArray[index];
 		}
-		
+
+		// return scaled value.
 		return dScale;
 	}
 
