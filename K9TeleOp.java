@@ -79,6 +79,20 @@ public class K9TeleOp extends OpMode {
 	/**
 	 * Constructor
 	 */
+
+	Servo servo1;
+	Servo servo2;
+
+	//Position constants for the buttons
+	double DOWN_POSITION = 0.1;
+	double UP_POSITION = 0.1;
+
+	//Scale constant to scale the joystick value by
+	double SCALE = 0.01;
+	//Variable for the servo's current position
+	double currentPosition;
+
+
 	public K9TeleOp() {
 
 	}
@@ -121,6 +135,11 @@ public class K9TeleOp extends OpMode {
 		// assign the starting position of the wrist and claw
 		armPosition = 0.0;
 		clawPosition = 0.0;
+
+		servo1 = hardwareMap.servo.get("left_hand");
+		servo2 = hardwareMap.servo.get("right_hand");
+		//Set the current position to a known value
+		currentPosition = 0.5;
 	}
 
 	/*
@@ -203,6 +222,16 @@ public class K9TeleOp extends OpMode {
 		//claw.setPosition(clawPosition);
 
 
+		//Move servo 1 to the up position when a button is pressed
+		if(gamepad1.y) {
+			servo1.setPosition(UP_POSITION);
+			servo2.setPosition(UP_POSITION);
+		}
+		//Move servo 1 to the down position when a button is pressed
+		if(gamepad1.a) {
+			servo1.setPosition(DOWN_POSITION);
+			servo2.setPosition(DOWN_POSITION);
+		}
 
 
 		/*
