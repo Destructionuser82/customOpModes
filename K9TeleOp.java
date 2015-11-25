@@ -93,7 +93,7 @@ public class K9TeleOp extends OpMode {
 		// Initialize servos
 		servo = hardwareMap.servo.get("servo_1");
 		//Set the current position to a known value
-		currentPosition = 0.5;
+		currentPosition;
 	}
 
 	/*
