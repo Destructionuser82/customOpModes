@@ -63,7 +63,7 @@ public class K9TeleOp extends OpMode {
 	//Scale constant to scale the joystick value by
 	double SCALE = 0.01;
 	//Variable for the servo's current position
-	double currentPosition
+	double currentPosition;
 
 
 	public K9TeleOp() {
