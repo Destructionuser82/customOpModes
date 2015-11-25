@@ -134,7 +134,7 @@ public class K9TeleOp extends OpMode {
 			currentPosition += servoIncrement;
 
 			// Write the new positions to the servos
-			servo.setPosition(currentPosition1);
+			servo.setPosition(currentPosition);
 		}
 		//Close gates when 'a' is pressed
 		if(gamepad1.a) {
@@ -142,7 +142,7 @@ public class K9TeleOp extends OpMode {
 			currentPosition -= servoIncrement;
 
 			// Write the new positions to the servos
-			servo.setPosition(currentPosition1);
+			servo.setPosition(currentPosition);
 		}
 
 
