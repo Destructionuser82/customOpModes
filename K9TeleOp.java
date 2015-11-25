@@ -56,16 +56,14 @@ public class K9TeleOp extends OpMode {
 	DcMotor motorRight;
 	DcMotor motorLeft;
 
-	Servo servo1;
-	Servo servo2;
+	Servo servo;
 
 	double servoIncrement = 0.1;
 
 	//Scale constant to scale the joystick value by
 	double SCALE = 0.01;
 	//Variable for the servo's current position
-	double currentPosition1;
-	double currentPosition2;
+	double currentPosition
 
 
 	public K9TeleOp() {
@@ -93,11 +91,9 @@ public class K9TeleOp extends OpMode {
 		motorLeft.setDirection(DcMotor.Direction.REVERSE);
 
 		// Initialize servos
-		servo1 = hardwareMap.servo.get("servo_1");
-		servo2 = hardwareMap.servo.get("servo_6");
+		servo = hardwareMap.servo.get("servo_1");
 		//Set the current position to a known value
-		currentPosition1 = 0.5;
-		currentPosition2 = 0.5;
+		currentPosition = 0.5;
 	}
 
 	/*
@@ -135,22 +131,18 @@ public class K9TeleOp extends OpMode {
 		//Open gates when 'y' is pressed
 		if(gamepad1.y) {
 			// Increment each servo so that the gates open
-			currentPosition1 += servoIncrement;
-			currentPosition2 -= servoIncrement;
+			currentPosition += servoIncrement;
 
 			// Write the new positions to the servos
-			servo1.setPosition(currentPosition1);
-			servo2.setPosition(currentPosition2);
+			servo.setPosition(currentPosition1);
 		}
 		//Close gates when 'a' is pressed
 		if(gamepad1.a) {
 			// Increment each servo so that the gates close
-			currentPosition1 -= servoIncrement;
-			currentPosition2 += servoIncrement;
+			currentPosition -= servoIncrement;
 
 			// Write the new positions to the servos
-			servo1.setPosition(currentPosition1);
-			servo2.setPosition(currentPosition2);
+			servo.setPosition(currentPosition1);
 		}
 
 
